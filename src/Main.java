@@ -19,7 +19,7 @@ public class Main {
             }
         }
 
-        List<Node> path = BFS.search(graph, start, goal);
+        List<Node> path = BFS.search(start, goal);
 
         if (path != null) {
             System.out.println("Path found:");
@@ -37,7 +37,20 @@ public class Main {
         /*
         termina DFS
          */
+        System.out.println("__________________________________");
+        //DFS
+        path = DFS.search(graph, start, goal);
 
+        if (path != null) {
+            System.out.println("Path found:");
+            for (Node node : path) {
+                System.out.println(node.getValue() + " at (" + node.getRow() + ", " + node.getCol() + ")");
+            }
+        } else {
+            System.out.println("No path found.");
+        }
+
+        //end DFS
         /*
         for (Node node : graph.getNodes()) {
             System.out.println("Node: " + node.getValue() + " (Row: " + node.getRow() + ", Col: " + node.getCol() + ")");

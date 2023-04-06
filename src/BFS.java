@@ -1,7 +1,7 @@
 import java.util.*;
 
 class BFS {
-    public static List<Node> search(Graph graph, Node start, Node goal) {
+    public static List<Node> search(Node start, Node goal) {
         Queue<Node> queue = new LinkedList<>();
         Set<Node> visited = new HashSet<>();
         Map<Node, Node> parents = new HashMap<>();

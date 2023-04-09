@@ -9,7 +9,7 @@ class GraphSearch {
         Set<Node> visited = new HashSet<>();
         Map<Node, Node> parents = new HashMap<>();
 
-        //El offer es como el add
+        //El offer es similar el add
         queue.offer(start);
 
         while (!queue.isEmpty()) {
@@ -68,6 +68,13 @@ class GraphSearch {
         return null; // No path found
     }
 
+    /**
+     * Metodo que se encarga de devolver el camino encontrado
+     * @param start: nodo de inicio
+     * @param goal: nodo destino
+     * @param parents : mapa de nodos padre
+     * @return : Returna una lista de nodos con el camino
+     */
     private static List<Node> getPath(Node start, Node goal, Map<Node, Node> parents) {
         List<Node> path = new ArrayList<>();
         Node current = goal;
@@ -81,7 +88,13 @@ class GraphSearch {
         return path;
     }
 
-    //costo uniforme
+    /** Costo uniforme (UCS)
+     *  Este algoritmo, en este caso se comportaría como BFS ya que
+     *  no cuenta con valores en las aristas. en este caso se toma un costo
+     *  constante de 1
+     * @param graph
+     * @return
+     */
     public static List<Node> ucs(Graph graph) {
         PriorityQueue<Node> queue = new PriorityQueue<>(Comparator.comparingInt(Node::getCost));
         Map<Node, Node> parentMap = new HashMap<>();
@@ -120,6 +133,12 @@ class GraphSearch {
         return null;
     }
 
+    /**
+     *
+     * @param graph
+     * @param heuristic
+     * @return
+     */
     public static List<Node> aStar(Graph graph, HeuristicType heuristic) {
         PriorityQueue<Node> queue = new PriorityQueue<>(Comparator.comparingInt(Node::getCost));
         Map<Node, Node> parentMap = new HashMap<>();
@@ -172,6 +191,7 @@ class GraphSearch {
         // Goal node not found
         return null;
     }
+
     private static int getManhattanDistance(Node node1, Node node2) {
         int dx = Math.abs(node1.getRow() - node2.getRow());
         int dy = Math.abs(node1.getCol() - node2.getCol());

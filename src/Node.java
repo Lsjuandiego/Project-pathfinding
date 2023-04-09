@@ -4,10 +4,9 @@ class Node {
     double priority;
     private Node parent;
     private String value;
-    private int row, col, costSoFar, fCost,cost;
+    private int row, col,cost;
     private ArrayList<Node> neighbors;
     private boolean isStart, isGoal, isWall;
-    private double estimatedTotalCost;
 
     public Node(String value, int row, int col) {
         this.value = value;
@@ -19,8 +18,6 @@ class Node {
         isGoal = value.equals("F");
         isWall = value.equals("R") || value.equals("M");
         this.cost = Integer.MAX_VALUE;
-        this.costSoFar = Integer.MAX_VALUE;
-        this.estimatedTotalCost = Integer.MAX_VALUE;
     }
     public void setPriority(double priority) {
         this.priority = priority;
@@ -58,17 +55,11 @@ class Node {
         return isWall;
     }
 
-    public int getFCost() {
-        return fCost;
-    }
 
     public Node getParent() {
         return parent;
     }
 
-    public void setParent(Node parent) {
-        this.parent = parent;
-    }
 
     public int getCost() {
         return cost;
@@ -78,31 +69,15 @@ class Node {
         this.cost = cost;
     }
 
+    /**
+     * Saber si es vecino de un nodo dado
+     * @param other
+     * @return
+     */
     public boolean isNeighbor(Node other) {
         int rowDiff = Math.abs(this.row - other.row);
         int colDiff = Math.abs(this.col - other.col);
         return (rowDiff == 1 && colDiff == 0) || (rowDiff == 0 && colDiff == 1);
-    }
-
-
-    public void setEstimatedTotalCost(Node goal) {
-        int manhattanDist = Math.abs(goal.row - this.row) + Math.abs(goal.col - this.col);
-        this.estimatedTotalCost = this.costSoFar + manhattanDist;
-    }
-    public int getCostSoFar() {
-        return costSoFar;
-    }
-
-    public void setCostSoFar(int costSoFar) {
-        this.costSoFar = costSoFar;
-    }
-
-    public double getEstimatedTotalCost() {
-        return estimatedTotalCost;
-    }
-
-    public void setEstimatedTotalCost(double estimatedTotalCost) {
-        this.estimatedTotalCost = estimatedTotalCost;
     }
 
 }

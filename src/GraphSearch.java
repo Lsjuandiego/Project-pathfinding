@@ -119,7 +119,7 @@ class GraphSearch {
                 if (neighbor.isWall()) {
                     continue; // Ignorar nodos que son muros
                 }
-                int newCost = costMap.get(current) + 1; // Costo constante de 1 para todas las aristas
+                int newCost = costMap.get(current) + neighbor.getCost();
                 if (!costMap.containsKey(neighbor) || newCost < costMap.get(neighbor)) {
                     neighbor.setCost(newCost);
                     queue.add(neighbor);
@@ -182,6 +182,7 @@ class GraphSearch {
                     }
 
                     int priority = newCost + heuristicValue;
+                    System.out.println("heuristica "+heuristicValue);
                     neighbor.setPriority(priority);
                     queue.add(neighbor);
                 }

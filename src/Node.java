@@ -1,12 +1,13 @@
 import java.util.ArrayList;
 
 class Node {
-    double priority;
+    int priority;
     private Node parent;
     private String value;
     private int row, col,cost;
     private ArrayList<Node> neighbors;
     private boolean isStart, isGoal, isWall;
+    private static final int UNIT_COST = 1; // Costo uniforme para todas las aristas
 
     public Node(String value, int row, int col) {
         this.value = value;
@@ -17,9 +18,9 @@ class Node {
         isStart = value.equals("I");
         isGoal = value.equals("F");
         isWall = value.equals("R") || value.equals("M");
-        this.cost = Integer.MAX_VALUE;
+        this.cost = 0;
     }
-    public void setPriority(double priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
@@ -62,7 +63,7 @@ class Node {
 
 
     public int getCost() {
-        return cost;
+        return UNIT_COST;
     }
 
     public void setCost(int cost) {

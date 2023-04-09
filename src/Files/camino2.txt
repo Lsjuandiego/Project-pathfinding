@@ -1,5 +1,5 @@
-I,C,C,C,C,R,C
-C,M,C,M,C,M,C
+C,C,C,C,C,R,C
+C,M,C,M,I,M,C
 R,C,C,C,C,C,C
 C,M,C,M,C,M,C
 C,M,C,M,C,M,C

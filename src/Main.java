@@ -81,7 +81,4 @@ public class Main {
             System.out.println(node.getValue() + " at (" + node.getRow() + ", " + node.getCol() + ")");
         }
     }
-
-
-
-    }
+}

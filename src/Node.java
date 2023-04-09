@@ -57,28 +57,12 @@ class Node {
     }
 
 
-    public Node getParent() {
-        return parent;
-    }
-
-
     public int getCost() {
         return UNIT_COST;
     }
 
     public void setCost(int cost) {
         this.cost = cost;
-    }
-
-    /**
-     * Saber si es vecino de un nodo dado
-     * @param other
-     * @return
-     */
-    public boolean isNeighbor(Node other) {
-        int rowDiff = Math.abs(this.row - other.row);
-        int colDiff = Math.abs(this.col - other.col);
-        return (rowDiff == 1 && colDiff == 0) || (rowDiff == 0 && colDiff == 1);
     }
 
 }

@@ -67,6 +67,32 @@ class GraphSearch {
 
         return null; // No path found
     }
+    public static List<Node> dfsRecursive(Graph graph) {
+        Set<Node> visited = new HashSet<>();
+        List<Node> path = new ArrayList<>();
+        dfsRecursiveHelper(graph.getStartNode(), graph.getGoalNode(), visited, path);
+        return path;
+    }
+
+    private static boolean dfsRecursiveHelper(Node current, Node goal, Set<Node> visited, List<Node> path) {
+        visited.add(current);
+        path.add(current);
+
+        if (current.equals(goal)) {
+            return true;
+        }
+
+        for (Node neighbor : current.getNeighbors()) {
+            if (!visited.contains(neighbor) && !neighbor.isWall()) {
+                if (dfsRecursiveHelper(neighbor, goal, visited, path)) {
+                    return true;
+                }
+            }
+        }
+
+        path.remove(current);
+        return false;
+    }
 
     /**
      * Metodo que se encarga de devolver el camino encontrado
@@ -184,7 +210,6 @@ class GraphSearch {
                     }
 
                     int priority = newCost + heuristicValue;
-                    System.out.println("heuristica "+heuristicValue);
                     neighbor.setPriority(priority);
                     queue.add(neighbor);
                 }

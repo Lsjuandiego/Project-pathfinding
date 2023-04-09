@@ -17,7 +17,8 @@ public class Main {
         System.out.println("  4. A* search (Manhattan distance)");
         System.out.println("  5. A* search (Euclidean distance)");
         System.out.println("  6. Beam search");
-        System.out.println("  7. Hill climbing");
+        System.out.println("  7. Hill climbing (Euclidean distance)");
+        System.out.println("  8. Hill climbing (Manhattan distance)");
         String[] selectedAlgorithms = scanner.nextLine().trim().split(",");
 
         // Run the selected algorithms
@@ -50,18 +51,26 @@ public class Main {
                     break;
                 case "6":
                     System.out.println("\nRunning Beam search...");
-
+                    List<Node> beamSearch = GraphSearch.beamSearch(graph, 4, HeuristicType.MANHATTAN);
+                    printPathAndVisitedNodes(beamSearch);
                     break;
                 case "7":
-                    System.out.println("\nRunning Hill climbing...");
-                    //List<Node> hillClimbingPath = GraphSearch.hillClimbing(graph);
-                    //printPathAndVisitedNodes(hillClimbingPath);
+                    System.out.println("\nRunning Hill climbing with Euclidean distance...");
+                    List<Node> hillClimbingPath = GraphSearch.hillClimbing(graph, HeuristicType.EUCLIDEAN );
+                    printPathAndVisitedNodes(hillClimbingPath);
+                    break;
+                case "8":
+                    System.out.println("\nRunning Hill climbing with Euclidean distance...");
+                    List<Node> hillClimbingManhattanPath = GraphSearch.hillClimbing(graph, HeuristicType.MANHATTAN );
+                    printPathAndVisitedNodes(hillClimbingManhattanPath);
                     break;
                 default:
                     System.out.println("\nInvalid algorithm selected.");
             }
         }
     }
+
+
 
     private static void printPathAndVisitedNodes(List<Node> path) {
         if (path == null) {

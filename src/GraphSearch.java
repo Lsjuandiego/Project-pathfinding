@@ -110,6 +110,7 @@ class GraphSearch {
         while (!queue.isEmpty()) {
             Node current = queue.poll();
 
+            System.out.println("Visited: " + current.getValue() + " at (" + current.getRow() + ", " + current.getCol() + ")");
             if (current.equals(goal)) {
                 // Goal node found, return the path
                 return getPath(start, current, parentMap);
@@ -133,6 +134,7 @@ class GraphSearch {
         return null;
     }
 
+
     /**
      *
      * @param graph
@@ -153,7 +155,7 @@ class GraphSearch {
 
         while (!queue.isEmpty()) {
             Node current = queue.poll();
-
+            System.out.println("Visited: " + current.getValue() + " at (" + current.getRow() + ", " + current.getCol() + ")");
             if (current.equals(goal)) {
                 // Goal node found, return the path
                 return getPath(start, current, parentMap);
@@ -191,6 +193,103 @@ class GraphSearch {
 
         // Goal node not found
         return null;
+    }
+
+    public static List<Node> hillClimbing(Graph graph, HeuristicType heuristic) {
+        List<Node> visitedNodes = new ArrayList<>();
+
+        Node current = graph.getStartNode();
+        Node goal = graph.getGoalNode();
+
+        while (!current.equals(goal)) {
+            visitedNodes.add(current);
+            System.out.println("Visited: " + current.getValue() + " at (" + current.getRow() + ", " + current.getCol() + ")");
+            List<Node> neighbors = current.getNeighbors();
+            Node bestNeighbor = null;
+            int bestHeuristic = Integer.MAX_VALUE;
+
+            for (Node neighbor : neighbors) {
+                if (!visitedNodes.contains(neighbor)&& !neighbor.isWall()) {
+                    int heuristicValue;
+                    switch (heuristic) {
+                        case MANHATTAN:
+                            heuristicValue = getManhattanDistance(neighbor, goal);
+                            break;
+                        case EUCLIDEAN:
+                            heuristicValue = getEuclideanDistance(neighbor, goal);
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Invalid heuristic type.");
+                    }
+                    if (heuristicValue< bestHeuristic) {
+                        bestNeighbor = neighbor;
+                        bestHeuristic = heuristicValue;
+                    }
+                }
+            }
+
+            if (bestNeighbor == null) {
+                // Stuck, return null
+                return null;
+            }
+
+            current = bestNeighbor;
+        }
+
+        visitedNodes.add(current);
+        return visitedNodes;
+    }
+    public static List<Node> beamSearch(Graph graph, int k, HeuristicType heuristic) {
+        List<Node> visitedNodes = new ArrayList<>();
+
+        Node current = graph.getStartNode();
+        Node goal = graph.getGoalNode();
+
+        while (!current.equals(goal)) {
+            visitedNodes.add(current);
+            System.out.println("Visited: " + current.getValue() + " at (" + current.getRow() + ", " + current.getCol() + ")");
+            List<Node> neighbors = current.getNeighbors();
+
+            PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(Node::getCost));
+
+            for (Node neighbor : neighbors) {
+                if (!visitedNodes.contains(neighbor) && !neighbor.isWall()) {
+                    int heuristicValue;
+                    switch (heuristic) {
+                        case MANHATTAN:
+                            heuristicValue = getManhattanDistance(neighbor, goal);
+                            break;
+                        case EUCLIDEAN:
+                            heuristicValue = getEuclideanDistance(neighbor, goal);
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Invalid heuristic type.");
+                    }
+
+                    neighbor.setCost(heuristicValue);
+                    pq.add(neighbor);
+                }
+            }
+
+            if (pq.isEmpty()) {
+                // Stuck, return null
+                return null;
+            }
+
+            current = pq.poll();
+            if (k > 1) {
+                List<Node> candidates = new ArrayList<>();
+                while (!pq.isEmpty() && candidates.size() < k - 1) {
+                    candidates.add(pq.poll());
+                }
+                pq.clear();
+                pq.add(current);
+                pq.addAll(candidates);
+            }
+        }
+
+        visitedNodes.add(current);
+        return visitedNodes;
     }
 
     private static int getManhattanDistance(Node node1, Node node2) {

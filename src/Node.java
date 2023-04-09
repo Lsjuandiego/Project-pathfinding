@@ -1,29 +1,30 @@
 import java.util.ArrayList;
 
 class Node {
+    double priority;
+    private Node parent;
     private String value;
-    private int row;
-    private int col;
+    private int row, col, costSoFar, fCost,cost;
     private ArrayList<Node> neighbors;
-    private boolean isStart;
-    private boolean isGoal;
-    private boolean isWall;
-    private int costSoFar;
+    private boolean isStart, isGoal, isWall;
     private double estimatedTotalCost;
-    private int fCost; // costo total del nodo (gCost + hCost)
 
     public Node(String value, int row, int col) {
         this.value = value;
         this.row = row;
         this.col = col;
+        this.parent = null;
         neighbors = new ArrayList<>();
         isStart = value.equals("I");
         isGoal = value.equals("F");
         isWall = value.equals("R") || value.equals("M");
+        this.cost = Integer.MAX_VALUE;
         this.costSoFar = Integer.MAX_VALUE;
         this.estimatedTotalCost = Integer.MAX_VALUE;
     }
-
+    public void setPriority(double priority) {
+        this.priority = priority;
+    }
 
     public String getValue() {
         return value;
@@ -61,11 +62,28 @@ class Node {
         return fCost;
     }
 
+    public Node getParent() {
+        return parent;
+    }
+
+    public void setParent(Node parent) {
+        this.parent = parent;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
     public boolean isNeighbor(Node other) {
         int rowDiff = Math.abs(this.row - other.row);
         int colDiff = Math.abs(this.col - other.col);
         return (rowDiff == 1 && colDiff == 0) || (rowDiff == 0 && colDiff == 1);
     }
+
 
     public void setEstimatedTotalCost(Node goal) {
         int manhattanDist = Math.abs(goal.row - this.row) + Math.abs(goal.col - this.col);

@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 class Graph {
+
     private ArrayList<Node> nodes;
     private Node startNode;
     private Node goalNode;
@@ -17,11 +18,11 @@ class Graph {
         return nodes;
     }
 
+
     public Node getStartNode() {
         for (Node node : nodes) {
             if (node.isStart()) {
                 startNode = node;
-                break;
             }
         }
         return startNode;
@@ -31,11 +32,16 @@ class Graph {
         for (Node node : nodes) {
             if (node.isGoal()) {
                 goalNode = node;
-                break;
             }
         }
         return goalNode;
     }
+
+    /**
+     * Metodo para obtener los vecinos de un nodo
+     * @param node
+     * @return
+     */
     public ArrayList<Node> getNeighbors(Node node) {
         ArrayList<Node> neighbors = new ArrayList<>();
         int row = node.getRow();
@@ -43,7 +49,7 @@ class Graph {
         int numRows = nodes.size();
         int numCols = nodes.get(0).getNeighbors().size();
 
-        // Check the node above
+        // Evalúa el nodo de arriba
         if (row > 0) {
             Node neighbor = nodes.get(row - 1).getNeighbors().get(col);
             if (!neighbor.getValue().equals("R") && !neighbor.getValue().equals("M")) {
@@ -51,7 +57,7 @@ class Graph {
             }
         }
 
-        // Check the node below
+        // Evalúa el nodo de abajo
         if (row < numRows - 1) {
             Node neighbor = nodes.get(row + 1).getNeighbors().get(col);
             if (!neighbor.getValue().equals("R") && !neighbor.getValue().equals("M")) {
@@ -59,7 +65,7 @@ class Graph {
             }
         }
 
-        // Check the node to the left
+        // izquierda
         if (col > 0) {
             Node neighbor = nodes.get(row).getNeighbors().get(col - 1);
             if (!neighbor.getValue().equals("R") && !neighbor.getValue().equals("M")) {
@@ -67,7 +73,7 @@ class Graph {
             }
         }
 
-        // Check the node to the right
+        // Derecha
         if (col < numCols - 1) {
             Node neighbor = nodes.get(row).getNeighbors().get(col + 1);
             if (!neighbor.getValue().equals("R") && !neighbor.getValue().equals("M")) {

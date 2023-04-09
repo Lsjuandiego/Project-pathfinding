@@ -9,6 +9,7 @@ class GraphSearch {
         Set<Node> visited = new HashSet<>();
         Map<Node, Node> parents = new HashMap<>();
 
+        //El offer es como el add
         queue.offer(start);
 
         while (!queue.isEmpty()) {
@@ -81,61 +82,106 @@ class GraphSearch {
     }
 
     //costo uniforme
-    public static List<Node> uniformCostSearch(Graph graph) {
-        // Set initial cost of start node to zero
+    public static List<Node> ucs(Graph graph) {
+        PriorityQueue<Node> queue = new PriorityQueue<>(Comparator.comparingInt(Node::getCost));
+        Map<Node, Node> parentMap = new HashMap<>();
+        Map<Node, Integer> costMap = new HashMap<>();
+
         Node start = graph.getStartNode();
+        Node goal = graph.getGoalNode();
         start.setCost(0);
+        queue.offer(start);
+        parentMap.put(start, null);
+        costMap.put(start, 0);
 
-        // Initialize frontier as a priority queue ordered by node cost
-        PriorityQueue<Node> frontier = new PriorityQueue<>(Comparator.comparing(Node::getCost));
-        frontier.add(start);
+        while (!queue.isEmpty()) {
+            Node current = queue.poll();
 
-        // Initialize explored set
-        Set<Node> explored = new HashSet<>();
-
-        // Search for goal node
-        while (!frontier.isEmpty()) {
-            // Get node with lowest cost in frontier
-            Node current = frontier.poll();
-
-            // Check if current node is goal node
-            if (current.isGoal()) {
-                // Reconstruct path from start to goal node and return it
-                List<Node> path = new ArrayList<>();
-                Node node = current;
-                while (node != null) {
-                    path.add(node);
-                    node = node.getParent();
-                }
-                Collections.reverse(path);
-                return path;
+            if (current.equals(goal)) {
+                // Goal node found, return the path
+                return getPath(start, current, parentMap);
             }
 
-            // Add current node to explored set
-            explored.add(current);
-
-            // Expand current node and add its neighbors to frontier
-            for (Node neighbor : graph.getNeighbors(current)) {
-                // Skip neighbors that have already been explored
-                if (explored.contains(neighbor)) {
-                    continue;
+            for (Node neighbor : current.getNeighbors()) {
+                if (neighbor.isWall()) {
+                    continue; // Ignorar nodos que son muros
                 }
-
-                // Calculate cost from start to neighbor through current node
-                int newCost = current.getCost() + graph.getCost(current, neighbor);
-
-                // If neighbor is not in frontier, or if new path to neighbor is cheaper than previous path, update neighbor
-                if (!frontier.contains(neighbor) || newCost < neighbor.getCost()) {
+                int newCost = costMap.get(current) + 1; // Costo constante de 1 para todas las aristas
+                if (!costMap.containsKey(neighbor) || newCost < costMap.get(neighbor)) {
                     neighbor.setCost(newCost);
-                    neighbor.setParent(current);
-                    if (frontier.contains(neighbor)) {
-                        frontier.remove(neighbor);
-                    }
-                    frontier.add(neighbor);
+                    queue.add(neighbor);
+                    parentMap.put(neighbor, current);
+                    costMap.put(neighbor, newCost);
                 }
             }
         }
+
         // Goal node not found
         return null;
     }
+
+    public static List<Node> aStar(Graph graph, HeuristicType heuristic) {
+        PriorityQueue<Node> queue = new PriorityQueue<>(Comparator.comparingInt(Node::getCost));
+        Map<Node, Node> parentMap = new HashMap<>();
+        Map<Node, Integer> costMap = new HashMap<>();
+
+        Node start = graph.getStartNode();
+        Node goal = graph.getGoalNode();
+        start.setCost(0);
+        queue.add(start);
+        parentMap.put(start, null);
+        costMap.put(start, 0);
+
+        while (!queue.isEmpty()) {
+            Node current = queue.poll();
+
+            if (current.equals(goal)) {
+                // Goal node found, return the path
+                return getPath(start, current, parentMap);
+            }
+
+            for (Node neighbor : current.getNeighbors()) {
+                if (neighbor.isWall()) {
+                    continue; // Ignorar nodos que son muros
+                }
+                int newCost = costMap.get(current) + neighbor.getCost();
+                if (!costMap.containsKey(neighbor) || newCost < costMap.get(neighbor)) {
+                    neighbor.setCost(newCost);
+                    parentMap.put(neighbor, current);
+                    costMap.put(neighbor, newCost);
+
+                    int heuristicValue;
+                    switch (heuristic) {
+                        case MANHATTAN:
+                            heuristicValue = getManhattanDistance(neighbor, goal);
+                            break;
+                        case EUCLIDEAN:
+                            heuristicValue = getEuclideanDistance(neighbor, goal);
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Invalid heuristic type.");
+                    }
+
+                    int priority = newCost + heuristicValue;
+                    neighbor.setPriority(priority);
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        // Goal node not found
+        return null;
+    }
+    private static int getManhattanDistance(Node node1, Node node2) {
+        int dx = Math.abs(node1.getRow() - node2.getRow());
+        int dy = Math.abs(node1.getCol() - node2.getCol());
+        return dx + dy;
+    }
+    private static int getEuclideanDistance(Node node1, Node node2) {
+        int dx = node1.getRow() - node2.getRow();
+        int dy = node1.getCol() - node2.getCol();
+        return (int) Math.sqrt(dx * dx + dy * dy);
+    }
+
+
 }

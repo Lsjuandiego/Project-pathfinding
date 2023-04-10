@@ -181,7 +181,7 @@ class GraphSearch {
 
         while (!queue.isEmpty()) {
             Node current = queue.poll();
-            System.out.println("Visited: " + current.getValue() + " at (" + current.getRow() + ", " + current.getCol() + ")");
+            System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
             if (current.equals(goal)) {
                 // Goal node found, return the path
                 return getPath(start, current, parentMap);
@@ -206,7 +206,7 @@ class GraphSearch {
                             heuristicValue = getEuclideanDistance(neighbor, goal);
                             break;
                         default:
-                            throw new IllegalArgumentException("Invalid heuristic type.");
+                            throw new IllegalArgumentException("Tipo de euristica no valida.");
                     }
 
                     int priority = newCost + heuristicValue;
@@ -228,7 +228,7 @@ class GraphSearch {
 
         while (!current.equals(goal)) {
             visitedNodes.add(current);
-            System.out.println("Visited: " + current.getValue() + " at (" + current.getRow() + ", " + current.getCol() + ")");
+            System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
             List<Node> neighbors = current.getNeighbors();
             Node bestNeighbor = null;
             int bestHeuristic = Integer.MAX_VALUE;
@@ -244,7 +244,7 @@ class GraphSearch {
                             heuristicValue = getEuclideanDistance(neighbor, goal);
                             break;
                         default:
-                            throw new IllegalArgumentException("Invalid heuristic type.");
+                            throw new IllegalArgumentException("Tipo de euristica no valida.");
                     }
                     if (heuristicValue< bestHeuristic) {
                         bestNeighbor = neighbor;
@@ -272,7 +272,7 @@ class GraphSearch {
 
         while (!current.equals(goal)) {
             visitedNodes.add(current);
-            System.out.println("Visited: " + current.getValue() + " at (" + current.getRow() + ", " + current.getCol() + ")");
+            System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
             List<Node> neighbors = current.getNeighbors();
 
             PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(Node::getCost));
@@ -288,7 +288,7 @@ class GraphSearch {
                             heuristicValue = getEuclideanDistance(neighbor, goal);
                             break;
                         default:
-                            throw new IllegalArgumentException("Invalid heuristic type.");
+                            throw new IllegalArgumentException("Tipo de euristica no valida.");
                     }
 
                     neighbor.setCost(heuristicValue);

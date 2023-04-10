@@ -10,7 +10,7 @@ public class Main {
 
 // Prompt the user to select the algorithms to run
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Select the algorithms to run (separate with commas):");
+        System.out.println("Seleccione los algoritmos que desea correr (separado con comas):");
         System.out.println("  1. Breadth-first search (BFS)");
         System.out.println("  2. Depth-first search (DFS)");
         System.out.println("  3. Uniform-cost search (UCS)");
@@ -27,57 +27,57 @@ public class Main {
         for (String algorithm : selectedAlgorithms) {
             switch (algorithm.trim()) {
                 case "1":
-                    System.out.println("\nRunning Breadth-first search (BFS)...");
+                    System.out.println("\nEjecutando Breadth-first search (BFS)...");
                     List<Node> bfsPath = GraphSearch.bfs(graph);
                     printPathAndVisitedNodes(bfsPath);
                     break;
                 case "2":
-                    System.out.println("\nRunning Depth-first search (DFS)...");
+                    System.out.println("\nEjecutando Depth-first search (DFS)...");
                     List<Node> dfsPath = GraphSearch.dfs(graph);
                     printPathAndVisitedNodes(dfsPath);
                     break;
                 case "3":
-                    System.out.println("\nRunning Uniform-cost search (UCS)...");
+                    System.out.println("\nEjecutando Uniform-cost search (UCS)...");
                     List<Node> ucsPath = GraphSearch.ucs(graph);
                     printPathAndVisitedNodes(ucsPath);
                     break;
                 case "4":
-                    System.out.println("\nRunning A* search with Manhattan distance...");
+                    System.out.println("\nEjecutando A* search with Manhattan distance...");
                     List<Node> aStarManhattanPath = GraphSearch.aStar(graph, HeuristicType.MANHATTAN);
                     printPathAndVisitedNodes(aStarManhattanPath);
                     break;
                 case "5":
-                    System.out.println("\nRunning A* search with Euclidean distance...");
+                    System.out.println("\nEjecutando A* search with Euclidean distance...");
                     List<Node> aStarEuclideanPath = GraphSearch.aStar(graph, HeuristicType.EUCLIDEAN);
                     printPathAndVisitedNodes(aStarEuclideanPath);
                     break;
                 case "6":
-                    System.out.println("\nRunning Beam search with Manhattan distance...");
+                    System.out.println("\nEjecutando Beam search with Manhattan distance...");
                     List<Node> beamSearch = GraphSearch.beamSearch(graph, 4, HeuristicType.MANHATTAN);
                     printPathAndVisitedNodes(beamSearch);
                     break;
                 case "7":
-                    System.out.println("\nRunning Beam search with Euclidean distance...");
+                    System.out.println("\nEjecutando Beam search with Euclidean distance...");
                     List<Node> beamSearchEuclidean = GraphSearch.beamSearch(graph, 4, HeuristicType.EUCLIDEAN);
                     printPathAndVisitedNodes(beamSearchEuclidean);
                     break;
                 case "8":
-                    System.out.println("\nRunning Hill climbing with Manhattan distance...");
+                    System.out.println("\nEjecutando Hill climbing with Manhattan distance...");
                     List<Node> hillClimbingManhattanPath = GraphSearch.hillClimbing(graph, HeuristicType.MANHATTAN );
                     printPathAndVisitedNodes(hillClimbingManhattanPath);
                     break;
                 case "9":
-                    System.out.println("\nRunning Hill climbing with Euclidean distance...");
+                    System.out.println("\nEjecutando Hill climbing with Euclidean distance...");
                     List<Node> hillClimbingPath = GraphSearch.hillClimbing(graph, HeuristicType.EUCLIDEAN );
                     printPathAndVisitedNodes(hillClimbingPath);
                     break;
                 case "10":
-                    System.out.println("\nRunning Depth-first search Recursive (DFS)...");
+                    System.out.println("\nEjecutando Depth-first search Recursive (DFS)...");
                     List<Node> dfsPathRecursive = GraphSearch.dfs(graph);
                     printPathAndVisitedNodes(dfsPathRecursive);
                     break;
                 default:
-                    System.out.println("\nInvalid algorithm selected.");
+                    System.out.println("\nSelección de algoritmo no permitido.");
             }
         }
     }
@@ -86,11 +86,11 @@ public class Main {
 
     private static void printPathAndVisitedNodes(List<Node> path) {
         if (path == null) {
-            System.out.println("No path found.");
+            System.out.println("Camino no encontrado.");
             return;
         }
         for (Node node : path) {
-            System.out.println(node.getValue() + " at (" + node.getRow() + ", " + node.getCol() + ")");
+            System.out.println(node.getValue() + " en (" + node.getRow() + ", " + node.getCol() + ")");
         }
     }
 }

@@ -16,9 +16,11 @@ public class Main {
         System.out.println("  3. Uniform-cost search (UCS)");
         System.out.println("  4. A* search (Manhattan distance)");
         System.out.println("  5. A* search (Euclidean distance)");
-        System.out.println("  6. Beam search");
-        System.out.println("  7. Hill climbing (Euclidean distance)");
+        System.out.println("  6. Beam search (Manhattan distance)");
+        System.out.println("  7. Beam search (Euclidean distance)");
         System.out.println("  8. Hill climbing (Manhattan distance)");
+        System.out.println("  8. Hill climbing (Euclidean distance)");
+        System.out.println("  10. Recursive Depth-first search (DFS))");
         String[] selectedAlgorithms = scanner.nextLine().trim().split(",");
 
         // Run the selected algorithms
@@ -50,19 +52,29 @@ public class Main {
                     printPathAndVisitedNodes(aStarEuclideanPath);
                     break;
                 case "6":
-                    System.out.println("\nRunning Beam search...");
+                    System.out.println("\nRunning Beam search with Manhattan distance...");
                     List<Node> beamSearch = GraphSearch.beamSearch(graph, 4, HeuristicType.MANHATTAN);
                     printPathAndVisitedNodes(beamSearch);
                     break;
                 case "7":
+                    System.out.println("\nRunning Beam search with Euclidean distance...");
+                    List<Node> beamSearchEuclidean = GraphSearch.beamSearch(graph, 4, HeuristicType.EUCLIDEAN);
+                    printPathAndVisitedNodes(beamSearchEuclidean);
+                    break;
+                case "8":
+                    System.out.println("\nRunning Hill climbing with Manhattan distance...");
+                    List<Node> hillClimbingManhattanPath = GraphSearch.hillClimbing(graph, HeuristicType.MANHATTAN );
+                    printPathAndVisitedNodes(hillClimbingManhattanPath);
+                    break;
+                case "9":
                     System.out.println("\nRunning Hill climbing with Euclidean distance...");
                     List<Node> hillClimbingPath = GraphSearch.hillClimbing(graph, HeuristicType.EUCLIDEAN );
                     printPathAndVisitedNodes(hillClimbingPath);
                     break;
-                case "8":
-                    System.out.println("\nRunning Hill climbing with Euclidean distance...");
-                    List<Node> hillClimbingManhattanPath = GraphSearch.hillClimbing(graph, HeuristicType.MANHATTAN );
-                    printPathAndVisitedNodes(hillClimbingManhattanPath);
+                case "10":
+                    System.out.println("\nRunning Depth-first search Recursive (DFS)...");
+                    List<Node> dfsPathRecursive = GraphSearch.dfs(graph);
+                    printPathAndVisitedNodes(dfsPathRecursive);
                     break;
                 default:
                     System.out.println("\nInvalid algorithm selected.");

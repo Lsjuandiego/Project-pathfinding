@@ -6,7 +6,7 @@ import java.util.Set;
 public class Main {
     public static void main(String[] args) {
         GraphReader reader = new GraphReader();
-        Graph graph = reader.readGraphFromFile("src/Files/camino.txt");
+        Graph graph = reader.readGraphFromFile("src/Files/camino2.txt");
 
 // Prompt the user to select the algorithms to run
         Scanner scanner = new Scanner(System.in);
@@ -19,8 +19,9 @@ public class Main {
         System.out.println("  6. Beam search (Manhattan distance)");
         System.out.println("  7. Beam search (Euclidean distance)");
         System.out.println("  8. Hill climbing (Manhattan distance)");
-        System.out.println("  8. Hill climbing (Euclidean distance)");
+        System.out.println("  9. Hill climbing (Euclidean distance)");
         System.out.println("  10. Recursive Depth-first search (DFS))");
+
         String[] selectedAlgorithms = scanner.nextLine().trim().split(",");
 
         // Run the selected algorithms
@@ -73,7 +74,7 @@ public class Main {
                     break;
                 case "10":
                     System.out.println("\nEjecutando Depth-first search Recursive (DFS)...");
-                    List<Node> dfsPathRecursive = GraphSearch.dfs(graph);
+                    List<Node> dfsPathRecursive = GraphSearch.dfsRecursive(graph);
                     printPathAndVisitedNodes(dfsPathRecursive);
                     break;
                 default:

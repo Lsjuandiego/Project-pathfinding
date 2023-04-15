@@ -21,7 +21,7 @@ class GraphSearch {
 
             if (!visited.contains(node) && !node.isWall()) {
                 visited.add(node);
-                System.out.println("Visited: " + node.getValue() + " at (" + node.getRow() + ", " + node.getCol() + ")");
+                System.out.println("Visitado: " + node.getValue() + " en (" + node.getRow() + ", " + node.getCol() + ")");
 
                 for (Node neighbor : node.getNeighbors()) {
                     if (!visited.contains(neighbor) && !neighbor.isWall()) {
@@ -54,7 +54,7 @@ class GraphSearch {
 
             if (!visited.contains(node) && !node.isWall()) {
                 visited.add(node);
-                System.out.println("Visited: " + node.getValue() + " at (" + node.getRow() + ", " + node.getCol() + ")");
+                System.out.println("visitado: " + node.getValue() + " en (" + node.getRow() + ", " + node.getCol() + ")");
 
                 for (Node neighbor : node.getNeighbors()) {
                     if (!visited.contains(neighbor) && !neighbor.isWall()) {
@@ -136,7 +136,7 @@ class GraphSearch {
         while (!queue.isEmpty()) {
             Node current = queue.poll();
 
-            System.out.println("Visited: " + current.getValue() + " at (" + current.getRow() + ", " + current.getCol() + ")");
+            System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
             if (current.equals(goal)) {
                 // Goal node found, return the path
                 return getPath(start, current, parentMap);
@@ -191,13 +191,13 @@ class GraphSearch {
                 if (neighbor.isWall()) {
                     continue; // Ignorar nodos que son muros
                 }
-                System.out.println("actual "+current.getValue()+" vecino: "+neighbor.getValue()+" en "+neighbor.getRow()
-                        +", "+neighbor.getCol()+" y tiene un valor de "+neighbor.getCost());
+                //System.out.println("actual "+current.getValue()+" vecino: "+neighbor.getValue()+" en "+neighbor.getRow()
+                //        +", "+neighbor.getCol()+" y tiene un valor de "+neighbor.getCost());
                 int newCost = costMap.get(current) + current.getCost();
-                System.out.println("nuevo costo "+newCost);
+                //System.out.println("nuevo costo "+newCost);
                 if (!costMap.containsKey(neighbor) || newCost < costMap.get(neighbor)) {
                     neighbor.setCost(newCost);
-                    System.out.println("nuevo costo: "+neighbor.getCost());
+                    //System.out.println("nuevo costo: "+neighbor.getCost());
                     parentMap.put(neighbor, current);
                     costMap.put(neighbor, newCost);
 

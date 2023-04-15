@@ -146,7 +146,7 @@ class GraphSearch {
                 if (neighbor.isWall()) {
                     continue; // Ignorar nodos que son muros
                 }
-                int newCost = costMap.get(current) + neighbor.getCost();
+                int newCost = costMap.get(current) + current.getCost();
                 if (!costMap.containsKey(neighbor) || newCost < costMap.get(neighbor)) {
                     neighbor.setCost(newCost);
                     queue.add(neighbor);
@@ -191,9 +191,13 @@ class GraphSearch {
                 if (neighbor.isWall()) {
                     continue; // Ignorar nodos que son muros
                 }
-                int newCost = costMap.get(current) + neighbor.getCost();
+                System.out.println("actual "+current.getValue()+" vecino: "+neighbor.getValue()+" en "+neighbor.getRow()
+                        +", "+neighbor.getCol()+" y tiene un valor de "+neighbor.getCost());
+                int newCost = costMap.get(current) + current.getCost();
+                System.out.println("nuevo costo "+newCost);
                 if (!costMap.containsKey(neighbor) || newCost < costMap.get(neighbor)) {
                     neighbor.setCost(newCost);
+                    System.out.println("nuevo costo: "+neighbor.getCost());
                     parentMap.put(neighbor, current);
                     costMap.put(neighbor, newCost);
 
@@ -291,7 +295,12 @@ class GraphSearch {
                             throw new IllegalArgumentException("Tipo de euristica no valida.");
                     }
 
-                    neighbor.setCost(heuristicValue);
+                    int newCost = current.getCost() + neighbor.getCost();
+                    int priority = newCost + heuristicValue;
+
+                    neighbor.setCost(newCost);
+                    neighbor.setPriority(priority);
+
                     pq.add(neighbor);
                 }
             }

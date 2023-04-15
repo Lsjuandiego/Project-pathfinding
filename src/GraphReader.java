@@ -28,12 +28,43 @@ public class GraphReader {
                         Node left = graph.getNodes().get(graph.getNodes().size() - 2);
                         node.addNeighbor(left);
                         left.addNeighbor(node);
+
+                        if (row > 0) { // Diagonal superior izquierda
+                            Node topLeft = graph.getNodes().get(graph.getNodes().size() - values.length - 2);
+                            node.addNeighbor(topLeft);
+                            topLeft.addNeighbor(node);
+                        }
+
+                        if (row < graph.getHeight() - 1) { // Diagonal inferior izquierda
+                            System.out.println("altura "+graph.getHeight());
+                            Node bottomLeft = graph.getNodes().get(graph.getNodes().size() + values.length - 2);
+                            node.addNeighbor(bottomLeft);
+                            bottomLeft.addNeighbor(node);
+                        }
                     }
 
                     if (row > 0) {
                         Node top = graph.getNodes().get(graph.getNodes().size() - values.length - 1);
                         node.addNeighbor(top);
                         top.addNeighbor(node);
+
+                        if (col < values.length - 1) { // Diagonal superior derecha
+                            Node topRight = graph.getNodes().get(graph.getNodes().size() - values.length);
+                            node.addNeighbor(topRight);
+                            topRight.addNeighbor(node);
+                        }
+                    }
+
+                    if (row < graph.getHeight() - 1) {
+                        Node bottom = graph.getNodes().get(graph.getNodes().size() + values.length - 1);
+                        node.addNeighbor(bottom);
+                        bottom.addNeighbor(node);
+
+                        if (col < values.length - 1) { // Diagonal inferior derecha
+                            Node bottomRight = graph.getNodes().get(graph.getNodes().size() + values.length);
+                            node.addNeighbor(bottomRight);
+                            bottomRight.addNeighbor(node);
+                        }
                     }
                 }
 
@@ -46,4 +77,5 @@ public class GraphReader {
         }
 
         return graph;
-    }}
+    }
+}

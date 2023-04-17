@@ -72,6 +72,8 @@ public class GraphReader {
             }
 
             scanner.close();
+
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

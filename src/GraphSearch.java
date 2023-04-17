@@ -23,7 +23,7 @@ class GraphSearch {
                 visited.add(node);
                 System.out.println("Visitado: " + node.getValue() + " en (" + node.getRow() + ", " + node.getCol() + ")");
 
-                for (Node neighbor : node.getNeighbors()) {
+                for (Node neighbor : node.getNeighborsWithoutHeuristics()) {
                     if (!visited.contains(neighbor) && !neighbor.isWall()) {
                         parents.put(neighbor, node);
                         queue.offer(neighbor);
@@ -32,7 +32,7 @@ class GraphSearch {
             }
         }
 
-        return null; // No path found
+        return null; // Camino no encontrado
     }
 
     public static List<Node> dfs(Graph graph) {
@@ -56,7 +56,7 @@ class GraphSearch {
                 visited.add(node);
                 System.out.println("visitado: " + node.getValue() + " en (" + node.getRow() + ", " + node.getCol() + ")");
 
-                for (Node neighbor : node.getNeighbors()) {
+                for (Node neighbor : node.getNeighborsWithoutHeuristics()) {
                     if (!visited.contains(neighbor) && !neighbor.isWall()) {
                         parents.put(neighbor, node);
                         stack.push(neighbor);
@@ -65,7 +65,7 @@ class GraphSearch {
             }
         }
 
-        return null; // No path found
+        return null; // Camino no encontrado
     }
     public static List<Node> dfsRecursive(Graph graph) {
         Set<Node> visited = new HashSet<>();
@@ -82,7 +82,7 @@ class GraphSearch {
             return true;
         }
 
-        for (Node neighbor : current.getNeighbors()) {
+        for (Node neighbor : current.getNeighborsWithoutHeuristics()) {
             if (!visited.contains(neighbor) && !neighbor.isWall()) {
                 if (dfsRecursiveHelper(neighbor, goal, visited, path)) {
                     return true;
@@ -138,11 +138,11 @@ class GraphSearch {
 
             System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
             if (current.equals(goal)) {
-                // Goal node found, return the path
+                // Nodo objetivo encontrado, retorna el camino
                 return getPath(start, current, parentMap);
             }
 
-            for (Node neighbor : current.getNeighbors()) {
+            for (Node neighbor : current.getNeighborsWithoutHeuristics()) {
                 if (neighbor.isWall()) {
                     continue; // Ignorar nodos que son muros
                 }
@@ -156,7 +156,7 @@ class GraphSearch {
             }
         }
 
-        // Goal node not found
+        // Nodo final no encontrado
         return null;
     }
 
@@ -179,6 +179,8 @@ class GraphSearch {
         parentMap.put(start, null);
         costMap.put(start, 0);
 
+        boolean diagonal = heuristic == HeuristicType.EUCLIDEAN;
+
         while (!queue.isEmpty()) {
             Node current = queue.poll();
             System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
@@ -187,7 +189,7 @@ class GraphSearch {
                 return getPath(start, current, parentMap);
             }
 
-            for (Node neighbor : current.getNeighbors()) {
+            for (Node neighbor : current.getNeighbors(heuristic)) {
                 if (neighbor.isWall()) {
                     continue; // Ignorar nodos que son muros
                 }
@@ -202,15 +204,10 @@ class GraphSearch {
                     costMap.put(neighbor, newCost);
 
                     int heuristicValue;
-                    switch (heuristic) {
-                        case MANHATTAN:
-                            heuristicValue = getManhattanDistance(neighbor, goal);
-                            break;
-                        case EUCLIDEAN:
-                            heuristicValue = getEuclideanDistance(neighbor, goal);
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Tipo de euristica no valida.");
+                    if (diagonal) {
+                        heuristicValue = getEuclideanDistance(neighbor, goal);
+                    } else {
+                        heuristicValue = getManhattanDistance(neighbor, goal);
                     }
 
                     int priority = newCost + heuristicValue;
@@ -220,11 +217,12 @@ class GraphSearch {
             }
         }
 
-        // Goal node not found
+        // No se encontró el nodo objetivo
         return null;
     }
 
     public static List<Node> hillClimbing(Graph graph, HeuristicType heuristic) {
+        boolean diagonal = heuristic == HeuristicType.EUCLIDEAN;
         List<Node> visitedNodes = new ArrayList<>();
 
         Node current = graph.getStartNode();
@@ -233,22 +231,17 @@ class GraphSearch {
         while (!current.equals(goal)) {
             visitedNodes.add(current);
             System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
-            List<Node> neighbors = current.getNeighbors();
+            List<Node> neighbors = current.getNeighbors(heuristic);
             Node bestNeighbor = null;
             int bestHeuristic = Integer.MAX_VALUE;
 
             for (Node neighbor : neighbors) {
                 if (!visitedNodes.contains(neighbor)&& !neighbor.isWall()) {
                     int heuristicValue;
-                    switch (heuristic) {
-                        case MANHATTAN:
-                            heuristicValue = getManhattanDistance(neighbor, goal);
-                            break;
-                        case EUCLIDEAN:
-                            heuristicValue = getEuclideanDistance(neighbor, goal);
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Tipo de euristica no valida.");
+                    if (diagonal) {
+                        heuristicValue = getEuclideanDistance(neighbor, goal);
+                    } else {
+                        heuristicValue = getManhattanDistance(neighbor, goal);
                     }
                     if (heuristicValue< bestHeuristic) {
                         bestNeighbor = neighbor;
@@ -269,6 +262,7 @@ class GraphSearch {
         return visitedNodes;
     }
     public static List<Node> beamSearch(Graph graph, int k, HeuristicType heuristic) {
+        boolean diagonal = heuristic == HeuristicType.EUCLIDEAN;
         List<Node> visitedNodes = new ArrayList<>();
 
         Node current = graph.getStartNode();
@@ -277,22 +271,17 @@ class GraphSearch {
         while (!current.equals(goal)) {
             visitedNodes.add(current);
             System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
-            List<Node> neighbors = current.getNeighbors();
+            List<Node> neighbors = current.getNeighbors(heuristic);
 
             PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(Node::getCost));
 
             for (Node neighbor : neighbors) {
                 if (!visitedNodes.contains(neighbor) && !neighbor.isWall()) {
                     int heuristicValue;
-                    switch (heuristic) {
-                        case MANHATTAN:
-                            heuristicValue = getManhattanDistance(neighbor, goal);
-                            break;
-                        case EUCLIDEAN:
-                            heuristicValue = getEuclideanDistance(neighbor, goal);
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Tipo de euristica no valida.");
+                    if (diagonal) {
+                        heuristicValue = getEuclideanDistance(neighbor, goal);
+                    } else {
+                        heuristicValue = getManhattanDistance(neighbor, goal);
                     }
 
                     int newCost = current.getCost() + neighbor.getCost();
@@ -327,8 +316,8 @@ class GraphSearch {
     }
 
     private static int getManhattanDistance(Node node1, Node node2) {
-        int dx = Math.abs(node1.getRow() - node2.getRow());
-        int dy = Math.abs(node1.getCol() - node2.getCol());
+        int dx = Math.abs(node1.getCol() - node2.getCol());
+        int dy = Math.abs(node1.getRow() - node2.getRow());
         return dx + dy;
     }
     private static int getEuclideanDistance(Node node1, Node node2) {
@@ -336,6 +325,4 @@ class GraphSearch {
         int dy = node1.getCol() - node2.getCol();
         return (int) Math.sqrt(dx * dx + dy * dy);
     }
-
-
 }

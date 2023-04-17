@@ -1,12 +1,11 @@
-import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
+
 
 public class Main {
     public static void main(String[] args) {
         GraphReader reader = new GraphReader();
-        Graph graph = reader.readGraphFromFile("src/Files/camino2.txt");
+        Graph graph = reader.readGraphFromFile("src/Files/camino.txt");
 
 // Prompt the user to select the algorithms to run
         Scanner scanner = new Scanner(System.in);

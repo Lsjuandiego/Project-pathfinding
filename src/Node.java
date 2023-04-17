@@ -40,8 +40,35 @@ class Node {
         neighbors.add(neighbor);
     }
 
-    public ArrayList<Node> getNeighbors() {
-        return neighbors;
+    /**
+     * Obtiene los vecinos unicamente horizontales y verticales
+     * @return
+     */
+    public ArrayList<Node> getNeighborsWithoutHeuristics() {
+        ArrayList<Node> validNeighbors = new ArrayList<>();
+        for (Node neighbor : neighbors) {
+            int dx = Math.abs(neighbor.getRow() - this.getRow());
+            int dy = Math.abs(neighbor.getCol() - this.getCol());
+            if ((dx == 1 && dy == 0) || (dx == 0 && dy == 1)) {
+                validNeighbors.add(neighbor);
+            }
+        }
+        return validNeighbors;
+    }
+
+    public ArrayList<Node> getNeighbors(HeuristicType heuristic) {
+        ArrayList<Node> validNeighbors = new ArrayList<>();
+        for (Node neighbor : neighbors) {
+            int dx = Math.abs(neighbor.getRow() - this.getRow());
+            int dy = Math.abs(neighbor.getCol() - this.getCol());
+            if ((dx == 1 && dy == 0) || (dx == 0 && dy == 1)) {
+                validNeighbors.add(neighbor);
+            }
+            if (heuristic == HeuristicType.EUCLIDEAN && dx == 1 && dy == 1) {
+                validNeighbors.add(neighbor);
+            }
+        }
+        return validNeighbors;
     }
 
     public boolean isStart() {

@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         GraphReader reader = new GraphReader();
-        Graph graph = reader.readGraphFromFile("src/Files/camino.txt");
+        Graph graph = reader.readGraphFromFile("src/Files/camino3.txt");
 
 // Prompt the user to select the algorithms to run
         Scanner scanner = new Scanner(System.in);

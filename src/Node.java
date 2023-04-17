@@ -20,29 +20,50 @@ class Node {
         isWall = value.equals("R") || value.equals("M");
         this.cost = 0;
     }
+
+    /**
+     * Metodo para asognar la prioridad según la heuristica
+     * @param priority
+     */
     public void setPriority(int priority) {
         this.priority = priority;
     }
 
+    /**
+     * Metodo para obtener la "letra" del nodo
+     * @return
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Obtener la fila
+     * @return
+     */
     public int getRow() {
         return row;
     }
 
+    /**
+     * Obtener la columna
+     * @return
+     */
     public int getCol() {
         return col;
     }
 
+    /**
+     * Metodo para agregar vecino
+     * @param neighbor
+     */
     public void addNeighbor(Node neighbor) {
         neighbors.add(neighbor);
     }
 
     /**
      * Obtiene los vecinos unicamente horizontales y verticales
-     * @return
+     * @return lista de vecinos
      */
     public ArrayList<Node> getNeighborsWithoutHeuristics() {
         ArrayList<Node> validNeighbors = new ArrayList<>();
@@ -56,6 +77,11 @@ class Node {
         return validNeighbors;
     }
 
+    /**
+     * Obtiene todos los vecinos (horizontales y verticales)
+     * @param heuristic
+     * @return
+     */
     public ArrayList<Node> getNeighbors(HeuristicType heuristic) {
         ArrayList<Node> validNeighbors = new ArrayList<>();
         for (Node neighbor : neighbors) {
@@ -71,6 +97,7 @@ class Node {
         return validNeighbors;
     }
 
+
     public boolean isStart() {
         return isStart;
     }
@@ -84,10 +111,18 @@ class Node {
     }
 
 
+    /**
+     * Metodo para obtener el costo del nodo
+     * @return
+     */
     public int getCost() {
         return UNIT_COST;
     }
 
+    /**
+     * Asignar el costo al nodo
+     * @param cost
+     */
     public void setCost(int cost) {
         this.cost = cost;
     }

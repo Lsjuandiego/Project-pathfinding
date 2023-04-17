@@ -28,12 +28,12 @@ public class Main {
             switch (algorithm.trim()) {
                 case "1":
                     System.out.println("\nEjecutando Breadth-first search (BFS)...");
-                    List<Node> bfsPath = GraphSearch.bfs(graph);
+                    List<Node> bfsPath = GraphSearch.search(graph, true);
                     printPathAndVisitedNodes(bfsPath);
                     break;
                 case "2":
                     System.out.println("\nEjecutando Depth-first search (DFS)...");
-                    List<Node> dfsPath = GraphSearch.dfs(graph);
+                    List<Node> dfsPath = GraphSearch.search(graph, false);
                     printPathAndVisitedNodes(dfsPath);
                     break;
                 case "3":

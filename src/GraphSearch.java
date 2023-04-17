@@ -1,19 +1,26 @@
 import java.util.*;
 
 class GraphSearch {
-    public static List<Node> bfs(Graph graph) {
+
+    /**
+     * Metodo para implementar BFS y/o DFS
+     * @param graph
+     * @param useQueue true: para implementar BFS, false: implementar DFS
+     * @return
+     */
+    public static List<Node> search(Graph graph, boolean useQueue) {
         Node start = graph.getStartNode();
         Node goal = graph.getGoalNode();
 
-        Queue<Node> queue = new LinkedList<>();
+        Collection<Node> container = useQueue ? new LinkedList<>() : new Stack<>();
         Set<Node> visited = new HashSet<>();
         Map<Node, Node> parents = new HashMap<>();
 
-        //El offer es similar el add
-        queue.offer(start);
+        // Agregar el nodo inicial a la estructura de datos apropiada
+        container.add(start);
 
-        while (!queue.isEmpty()) {
-            Node node = queue.poll();
+        while (!container.isEmpty()) {
+            Node node = useQueue ? ((LinkedList<Node>) container).poll() : ((Stack<Node>) container).pop();
 
             if (node.equals(goal)) {
                 return getPath(start, goal, parents);
@@ -26,40 +33,7 @@ class GraphSearch {
                 for (Node neighbor : node.getNeighborsWithoutHeuristics()) {
                     if (!visited.contains(neighbor) && !neighbor.isWall()) {
                         parents.put(neighbor, node);
-                        queue.offer(neighbor);
-                    }
-                }
-            }
-        }
-
-        return null; // Camino no encontrado
-    }
-
-    public static List<Node> dfs(Graph graph) {
-        Node start = graph.getStartNode();
-        Node goal = graph.getGoalNode();
-
-        Stack<Node> stack = new Stack<>();
-        Set<Node> visited = new HashSet<>();
-        Map<Node, Node> parents = new HashMap<>();
-
-        stack.push(start);
-
-        while (!stack.isEmpty()) {
-            Node node = stack.pop();
-
-            if (node.equals(goal)) {
-                return getPath(start, goal, parents);
-            }
-
-            if (!visited.contains(node) && !node.isWall()) {
-                visited.add(node);
-                System.out.println("visitado: " + node.getValue() + " en (" + node.getRow() + ", " + node.getCol() + ")");
-
-                for (Node neighbor : node.getNeighborsWithoutHeuristics()) {
-                    if (!visited.contains(neighbor) && !neighbor.isWall()) {
-                        parents.put(neighbor, node);
-                        stack.push(neighbor);
+                        container.add(neighbor);
                     }
                 }
             }
@@ -156,7 +130,7 @@ class GraphSearch {
             }
         }
 
-        // Nodo final no encontrado
+        // No se encontró camino
         return null;
     }
 
@@ -185,7 +159,7 @@ class GraphSearch {
             Node current = queue.poll();
             System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
             if (current.equals(goal)) {
-                // Goal node found, return the path
+                // Nodo final encontrado
                 return getPath(start, current, parentMap);
             }
 
@@ -193,13 +167,9 @@ class GraphSearch {
                 if (neighbor.isWall()) {
                     continue; // Ignorar nodos que son muros
                 }
-                //System.out.println("actual "+current.getValue()+" vecino: "+neighbor.getValue()+" en "+neighbor.getRow()
-                //        +", "+neighbor.getCol()+" y tiene un valor de "+neighbor.getCost());
                 int newCost = costMap.get(current) + current.getCost();
-                //System.out.println("nuevo costo "+newCost);
                 if (!costMap.containsKey(neighbor) || newCost < costMap.get(neighbor)) {
                     neighbor.setCost(newCost);
-                    //System.out.println("nuevo costo: "+neighbor.getCost());
                     parentMap.put(neighbor, current);
                     costMap.put(neighbor, newCost);
 

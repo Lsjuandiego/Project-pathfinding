@@ -3,7 +3,7 @@ import java.util.ArrayList;
 class Node {
     int priority;
     private Node parent;
-    private String value;
+    private String value, name;
     private int row, col,cost;
     private ArrayList<Node> neighbors;
     private boolean isStart, isGoal, isWall;
@@ -11,6 +11,7 @@ class Node {
 
     public Node(String value, int row, int col) {
         this.value = value;
+        this.name = name;
         this.row = row;
         this.col = col;
         this.parent = null;
@@ -22,7 +23,7 @@ class Node {
     }
 
     /**
-     * Metodo para asognar la prioridad según la heuristica
+     * Metodo para asignar la prioridad según la heuristica
      * @param priority
      */
     public void setPriority(int priority) {
@@ -36,7 +37,12 @@ class Node {
     public String getValue() {
         return value;
     }
-
+    public String getName() {
+        return name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
     /**
      * Obtener la fila
      * @return
@@ -126,5 +132,11 @@ class Node {
     public void setCost(int cost) {
         this.cost = cost;
     }
+
+    public void setValue(String value){
+        this.value = value;
+    }
+
+
 
 }

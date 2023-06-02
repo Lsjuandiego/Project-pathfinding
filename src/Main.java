@@ -1,11 +1,18 @@
 import java.util.List;
 import java.util.Scanner;
+//2
 
+/**
+ * Cargar el siguiente mapa:
+ *
+ */
 
 public class Main {
     public static void main(String[] args) {
         GraphReader reader = new GraphReader();
-        Graph graph = reader.readGraphFromFile("src/Files/camino3.txt");
+        Graph graph = reader.readGraphFromFile("src/Files/CaminoSustentación.txt");
+        graph.newList(graph);
+
 
 // Prompt the user to select the algorithms to run
         Scanner scanner = new Scanner(System.in);
@@ -21,9 +28,11 @@ public class Main {
         System.out.println("  9. Hill climbing (Euclidean distance)");
         System.out.println("  10. Recursive Depth-first search (DFS))");
 
+
+
         String[] selectedAlgorithms = scanner.nextLine().trim().split(",");
 
-        // Run the selected algorithms
+        // Corre los algoritmos seleccionados
         for (String algorithm : selectedAlgorithms) {
             switch (algorithm.trim()) {
                 case "1":
@@ -53,12 +62,12 @@ public class Main {
                     break;
                 case "6":
                     System.out.println("\nEjecutando Beam search with Manhattan distance...");
-                    List<Node> beamSearch = GraphSearch.beamSearch(graph, 4, HeuristicType.MANHATTAN);
+                    List<Node> beamSearch = GraphSearch.beamSearch(graph, 2, HeuristicType.MANHATTAN);
                     printPathAndVisitedNodes(beamSearch);
                     break;
                 case "7":
                     System.out.println("\nEjecutando Beam search with Euclidean distance...");
-                    List<Node> beamSearchEuclidean = GraphSearch.beamSearch(graph, 4, HeuristicType.EUCLIDEAN);
+                    List<Node> beamSearchEuclidean = GraphSearch.beamSearch(graph, 2, HeuristicType.EUCLIDEAN);
                     printPathAndVisitedNodes(beamSearchEuclidean);
                     break;
                 case "8":
@@ -80,17 +89,24 @@ public class Main {
                     System.out.println("\nSelección de algoritmo no permitido.");
             }
         }
+
+
     }
 
 
 
     private static void printPathAndVisitedNodes(List<Node> path) {
+        System.out.println("camino: ");
         if (path == null) {
             System.out.println("Camino no encontrado.");
             return;
         }
+        System.out.print("[");
         for (Node node : path) {
-            System.out.println(node.getValue() + " en (" + node.getRow() + ", " + node.getCol() + ")");
+
+            System.out.print(node.getName() + ",");
+
         }
+        System.out.print("]");
     }
 }

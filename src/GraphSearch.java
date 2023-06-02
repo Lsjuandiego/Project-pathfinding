@@ -23,12 +23,14 @@ class GraphSearch {
             Node node = useQueue ? ((LinkedList<Node>) container).poll() : ((Stack<Node>) container).pop();
 
             if (node.equals(goal)) {
+                System.out.print(goal.getName());
                 return getPath(start, goal, parents);
             }
 
             if (!visited.contains(node) && !node.isWall()) {
                 visited.add(node);
-                System.out.println("Visitado: " + node.getValue() + " en (" + node.getRow() + ", " + node.getCol() + ")");
+                System.out.print(node.getName() +" , ");
+
 
                 for (Node neighbor : node.getNeighborsWithoutHeuristics()) {
                     if (!visited.contains(neighbor) && !neighbor.isWall()) {
@@ -110,7 +112,7 @@ class GraphSearch {
         while (!queue.isEmpty()) {
             Node current = queue.poll();
 
-            System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
+            System.out.print(current.getName() +" , ");
             if (current.equals(goal)) {
                 // Nodo objetivo encontrado, retorna el camino
                 return getPath(start, current, parentMap);
@@ -157,7 +159,8 @@ class GraphSearch {
 
         while (!queue.isEmpty()) {
             Node current = queue.poll();
-            System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
+            System.out.print(current.getName() +" , ");
+            //System.out.println("Visitado: " + current.getName() + " en (" + current.getRow() + ", " + current.getCol() + ")");
             if (current.equals(goal)) {
                 // Nodo final encontrado
                 return getPath(start, current, parentMap);
@@ -200,7 +203,8 @@ class GraphSearch {
 
         while (!current.equals(goal)) {
             visitedNodes.add(current);
-            System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
+            System.out.print(current.getName() +" , ");
+           // System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
             List<Node> neighbors = current.getNeighbors(heuristic);
             Node bestNeighbor = null;
             int bestHeuristic = Integer.MAX_VALUE;
@@ -227,6 +231,7 @@ class GraphSearch {
 
             current = bestNeighbor;
         }
+        System.out.print(goal.getName());
 
         visitedNodes.add(current);
         return visitedNodes;
@@ -240,7 +245,8 @@ class GraphSearch {
 
         while (!current.equals(goal)) {
             visitedNodes.add(current);
-            System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
+            System.out.print(current.getName() +" , ");
+            //System.out.println("Visitado: " + current.getValue() + " en (" + current.getRow() + ", " + current.getCol() + ")");
             List<Node> neighbors = current.getNeighbors(heuristic);
 
             PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(Node::getCost));
@@ -280,6 +286,7 @@ class GraphSearch {
                 pq.addAll(candidates);
             }
         }
+        System.out.print(goal.getName());
 
         visitedNodes.add(current);
         return visitedNodes;
